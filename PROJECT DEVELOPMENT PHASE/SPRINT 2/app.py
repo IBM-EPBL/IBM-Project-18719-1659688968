@@ -6,7 +6,7 @@ import ibm_db
 from flask import *
 import datetime
  
-sendGrid = SendGridAPIClient('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')
+sendGrid = SendGridAPIClient('<send Grid api key>')
     
 
 
@@ -31,8 +31,7 @@ group_abbreviation={
     "ABN":"AB NEGATIVE"
 }
 plasma_group_list = ['OP', 'ON','AP','AN','BP','BN','ABP','ABN']
-# conn = ibm_db.connect("DATABASE=bludb;HOSTNAME=b1bc1829-6f45-4cd4-bef4-10cf081900bf.c1ogj3sd0tgtu0lqde00.databases.appdomain.cloud;PORT=32304;SECURITY=SSL;SSLServerCertificate=DigiCertGlobalRootCA.crt;UID=mww19723;PWD=DNvumA5tPIq0tzi8;", '', '')
-conn = ibm_db.connect("DATABASE=bludb;HOSTNAME=98538591-7217-4024-b027-8baa776ffad1.c3n41cmd0nqnrk39u98g.databases.appdomain.cloud;PORT=30875;SECURITY=SSL;SSLServerCertificate=DigiCertGlobalRootCA.crt;UID=xpl08937;PWD=1Np5XxS12C7fYfAB;", '', '')
+conn = ibm_db.connect("<DB connection url>", '', '')
 
 
 app = Flask(__name__)
