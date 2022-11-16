@@ -186,4 +186,51 @@ def dash():
     userData['PINCODE']=request.args.get('pincode',type=int) if request.args.get('pincode',type=int) else userData['PINCODE']
     count = getCount(userData['PINCODE'])
     return render_template('homepage.html',data={'status':True,"user":userData,"count":count})
+    # except:
+    #     print("error")
+    #     return render_template('.html',data={'status':False})
 
+# @app.route('/request/<blood>', methods=['GET'])
+# def requestForm(blood): 
+#     return render_template('request.html',})
+
+@app.route('/plasmarequest',methods=['GET','POST'])
+def requestPlasma():
+    if session.get('loggedin')==None:
+        return redirect(url_for('.login'))
+    if request.method == 'GET':
+        return render_template('request.html',blooddata={"status": True, "data":{"blood":request.args.get('group')}})
+    if not (request.form.get('group') and  request.form.get('pincode') 
+    and request.form.get('address') and request.form.get('email') and request.form.get('name') and request.form.get('phone')):
+        return render_template('requestfail.html')
+    contact = { 
+     "address":request.form.get('address'),
+     "email" :request.form.get('email'),
+     "name":request.form.get('name'),
+     "phone":request.form.get('phone'),
+    }
+    bloodGroup = request.form.get('group')
+    pincode = request.form.get('pincode',type=int)
+    email_list = getEmail(bloodGroup,pincode,contact)
+    print("list"+str(email_list))
+    return render_template('requestsuccess.html')
+
+@app.route('/profile',methods=['GET'])
+def profile():
+    if session.get('loggedin')==None:
+        return redirect(url_for('.login'))
+    try:
+        user_data = getUserData(session.get('id'))
+        return render_template('profile.html',resp=user_data)
+    except: 
+        return render_template('requestfail.html')
+@app.route('/logout')
+
+def logout():
+   session.pop('loggedin', None)
+   session.pop('id', None)
+   return redirect(url_for('.login'))
+
+   
+if __name__ == "__main__":
+    app.run('0.0.0.0',port=5001)
